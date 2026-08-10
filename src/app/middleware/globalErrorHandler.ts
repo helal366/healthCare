@@ -20,17 +20,16 @@ export const globalErrorHandler = async (
 	const errorName = err.name || "Internal Server Error";
 	// let errorDetails = err.stack
 
-	 if (err instanceof AppError) {
-     statusCode = err.statusCode;
-     message = err.message;
-   }
+	if (err instanceof AppError) {
+		statusCode = err.statusCode;
+		message = err.message;
+	}
 	if (err instanceof Prisma.PrismaClientValidationError) {
 		statusCode = StatusCodes.BAD_REQUEST;
 		message = "You have provided incorrect field type or missing fields";
 	} else if (err instanceof Prisma.PrismaClientKnownRequestError) {
 		if (err.code === "P2002") {
-			(statusCode = StatusCodes.BAD_REQUEST),
-				(message = "Duplicate Key Error");
+			(statusCode = StatusCodes.BAD_REQUEST), (message = "Duplicate Key Error");
 		} else if (err.code === "P2003") {
 			(statusCode = StatusCodes.BAD_REQUEST),
 				(message = "Foreign key constraint failed");
@@ -61,9 +60,7 @@ export const globalErrorHandler = async (
 		name:
 			envVars.NODE_ENV === "development" ? errorName : "Internal Server Error",
 		message:
-			envVars.NODE_ENV === "development"
-				? message
-				: "Internal Server Error",
+			envVars.NODE_ENV === "development" ? message : "Internal Server Error",
 		error: envVars.NODE_ENV === "development" ? err : undefined,
 		stack: envVars.NODE_ENV === "development" ? err.stack : undefined,
 	});

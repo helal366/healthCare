@@ -113,21 +113,22 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
 	});
 });
 
-const googleLogin=catchAsync(async(req:Request, res:Response, next:NextFunction)=>{
-
-	const payload=req.body;
-	const result = await AuthService.googleLogin(payload)
-	sendResponse(res, {
-    success: true,
-    statusCode: StatusCodes.OK,
-    message: "Google login successful",
-    data: result,
-  });
-})
+const googleLogin = catchAsync(
+	async (req: Request, res: Response, next: NextFunction) => {
+		const payload = req.body;
+		const result = await AuthService.googleLogin(payload);
+		sendResponse(res, {
+			success: true,
+			statusCode: StatusCodes.OK,
+			message: "Google login successful",
+			data: result,
+		});
+	},
+);
 export const AuthController = {
-  registerPatient,
-  loginUser,
-  getMe,
-  refreshToken,
-  googleLogin,
+	registerPatient,
+	loginUser,
+	getMe,
+	refreshToken,
+	googleLogin,
 };

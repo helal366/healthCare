@@ -23,18 +23,18 @@ import type { NextFunction, Request, Response } from "express";
 import { envVars } from "../config/index.js";
 import { AppError } from "../helperFunctions/globalErrorHelper.js";
 type AsyncHandler = (
-  req: Request,
-  res: Response,
-  next: NextFunction,
+	req: Request,
+	res: Response,
+	next: NextFunction,
 ) => Promise<void>;
 
 export const catchAsync = (fn: AsyncHandler) => {
-  return (req: Request, res: Response, next: NextFunction) => {
-    Promise.resolve(fn(req, res, next)).catch((error: Error | AppError) => {
-      if (envVars.NODE_ENV === "development") {
-        console.log("Catch Async error: ", error);
-      }
-      next(error);
-    });
-  };
+	return (req: Request, res: Response, next: NextFunction) => {
+		Promise.resolve(fn(req, res, next)).catch((error: Error | AppError) => {
+			if (envVars.NODE_ENV === "development") {
+				console.log("Catch Async error: ", error);
+			}
+			next(error);
+		});
+	};
 };
