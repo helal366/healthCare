@@ -12,3 +12,4 @@ yarn.lock
 package-lock.json
 pnpm-workspace.yaml
 .vscode
+google_auth_clientID_client_SECRET.json
