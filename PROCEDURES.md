@@ -9,3 +9,5 @@
 8. primarily do not need to add redirect url.
 9. click on create.
 10. store client ID and client secret at your env
+11. update congig/index.ts file 
+
