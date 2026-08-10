@@ -1,4 +1,4 @@
-import type { Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import httpStatus from "http-status";
 import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
@@ -113,9 +113,21 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
 	});
 });
 
+const googleLogin=catchAsync(async(req:Request, res:Response, next:NextFunction)=>{
+
+	sendResponse(res, {
+		success: true,
+		statusCode: httpStatus.OK,
+		message: "Google login successful",
+		data: {
+			
+		}
+	})
+})
 export const AuthController = {
-	registerPatient,
-	loginUser,
-	getMe,
-	refreshToken,
+  registerPatient,
+  loginUser,
+  getMe,
+  refreshToken,
+  googleLogin,
 };

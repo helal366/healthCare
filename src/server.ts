@@ -1,8 +1,8 @@
 import app from "./app";
-import config from "./app/config";
+import { envVars } from "./app/config";
 import { prisma } from "./app/lib/prisma";
 
-const PORT = config.port;
+const PORT = envVars.PORT;
 
 const main = async () => {
 	try {

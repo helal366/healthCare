@@ -4,11 +4,13 @@ import { Role, UserStatus } from "../../../generated/prisma/enums";
 import { prisma } from "../../lib/prisma";
 import { jwtUtils } from "../../utils/jwt";
 import type {
+  IGoogleLoginPayload,
   ILoginUserPayload,
   IRegisterPatientPayload,
   IRequestUser,
 } from "./auth.interface";
 import { envVars } from "../../config";
+import { OAuth2Client } from "google-auth-library";
 
 const registerPatient = async (payload: IRegisterPatientPayload) => {
   const { name, password } = payload;
@@ -188,9 +190,16 @@ const refreshToken = async (token: string) => {
   };
 };
 
+const googleLogin=async(payload:IGoogleLoginPayload)=>{
+  const googleClient = new OAuth2Client({
+    client_id: envVars.GOOGLE_CLIENT_ID
+  });
+
+}
 export const AuthService = {
   registerPatient,
   loginUser,
   getMe,
   refreshToken,
+  googleLogin,
 };

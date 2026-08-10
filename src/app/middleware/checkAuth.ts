@@ -1,10 +1,10 @@
 import type { NextFunction, Request, Response } from "express";
 import type { JwtPayload } from "jsonwebtoken";
 import type { Role } from "../../generated/prisma/enums";
-import config from "../config";
 import { prisma } from "../lib/prisma";
 import { catchAsync } from "../utils/catchAsync";
 import { jwtUtils } from "../utils/jwt";
+import { envVars } from "../config";
 
 declare global {
 	namespace Express {
@@ -35,7 +35,7 @@ export const auth = (...requiredRoles: Role[]) => {
 			);
 		}
 
-		const verifiedToken = jwtUtils.verifyToken(token, config.jwt_access_secret);
+		const verifiedToken = jwtUtils.verifyToken(token, envVars.JWT_ACCESS_SECRET);
 
 		if (!verifiedToken.success) {
 			throw new Error(verifiedToken.error);
