@@ -1,11 +1,11 @@
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import express, { type Application, type Request, type Response } from "express";
-import httpStatus from "http-status";
 import { globalErrorHandler } from "./app/middleware/globalErrorHandler";
 import { notFound } from "./app/middleware/notFound";
 import { AuthRoutes } from "./app/module/auth/auth.route";
 import { envVars } from "./app/config";
+import { StatusCodes } from "http-status-codes";
 
 const app: Application = express();
 
@@ -27,7 +27,7 @@ app.use("/api/v1/auth", AuthRoutes);
 
 // Basic route
 app.get("/", async (req: Request, res: Response) => {
-	res.status(httpStatus.OK).json({
+	res.status(StatusCodes.OK).json({
 		success: true,
 		message: "Welcome to PH Healthcare System Backend",
 	});

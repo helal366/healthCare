@@ -1,9 +1,9 @@
 import type { NextFunction, Request, Response } from "express";
-import httpStatus from "http-status";
 import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
 import type { IRequestUser } from "./auth.interface";
 import { AuthService } from "./auth.service";
+import { StatusCodes } from "http-status-codes";
 
 const registerPatient = catchAsync(async (req: Request, res: Response) => {
 	const payload = req.body;
@@ -25,7 +25,7 @@ const registerPatient = catchAsync(async (req: Request, res: Response) => {
 	});
 
 	sendResponse(res, {
-		statusCode: httpStatus.CREATED,
+		statusCode: StatusCodes.CREATED,
 		success: true,
 		message: "Patient registered successfully",
 		data: {
@@ -56,7 +56,7 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
 	});
 
 	sendResponse(res, {
-		statusCode: httpStatus.OK,
+		statusCode: StatusCodes.OK,
 		success: true,
 		message: "User logged in successfully",
 		data: {
@@ -75,7 +75,7 @@ const getMe = catchAsync(async (req: Request, res: Response) => {
 
 	const result = await AuthService.getMe(user);
 	sendResponse(res, {
-		statusCode: httpStatus.OK,
+		statusCode: StatusCodes.OK,
 		success: true,
 		message: "User profile fetched successfully",
 		data: result,
@@ -103,7 +103,7 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
 	});
 
 	sendResponse(res, {
-		statusCode: httpStatus.OK,
+		statusCode: StatusCodes.OK,
 		success: true,
 		message: "New tokens generated successfully",
 		data: {
@@ -117,10 +117,10 @@ const googleLogin=catchAsync(async(req:Request, res:Response, next:NextFunction)
 
 	sendResponse(res, {
 		success: true,
-		statusCode: httpStatus.OK,
+		statusCode: StatusCodes.OK,
 		message: "Google login successful",
 		data: {
-			
+
 		}
 	})
 })
