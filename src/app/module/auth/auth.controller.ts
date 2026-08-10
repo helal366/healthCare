@@ -117,12 +117,31 @@ const googleLogin = catchAsync(
 	async (req: Request, res: Response, next: NextFunction) => {
 		const payload = req.body;
 		const result = await AuthService.googleLogin(payload);
-		sendResponse(res, {
-			success: true,
-			statusCode: StatusCodes.OK,
-			message: "Google login successful",
-			data: result,
-		});
+
+		const { accessToken, refreshToken } = result;
+
+    res.cookie("accessToken", accessToken, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "none",
+      maxAge: 1000 * 60 * 60 * 24, // 24 hour or 1 day
+    });
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "none",
+      maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
+    });
+
+    sendResponse(res, {
+      statusCode: StatusCodes.OK,
+      success: true,
+      message: "User logged in successfully",
+      data: {
+        accessToken,
+        refreshToken,
+      },
+    });
 	},
 );
 export const AuthController = {
