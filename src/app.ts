@@ -7,7 +7,7 @@ import express, {
 } from "express";
 import { globalErrorHandler } from "./app/middleware/globalErrorHandler";
 import { notFound } from "./app/middleware/notFound";
-import { AuthRoutes } from "./app/module/auth/auth.route";
+import { AuthRouter } from "./app/module/auth/auth.route";
 import { envVars } from "./app/config";
 import { StatusCodes } from "http-status-codes";
 
@@ -27,7 +27,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
 
-app.use("/api/v1/auth", AuthRoutes);
+app.use("/api/v1/auth", AuthRouter);
 
 // Basic route
 app.get("/", async (req: Request, res: Response) => {

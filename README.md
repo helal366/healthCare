@@ -1,5 +1,12 @@
 # PH Healthcare System — Backend
-
+```
+sample : 
+{
+    "name": "patient1",
+    "email":"patient1@gmail.com",
+    "password":"Aa@123"
+}
+```
 REST API for a doctor-appointment platform: patients book consultations, doctors run them, admins manage the platform. This repo is the backend only.
 
 **Stack:** Node.js · Express 5 · TypeScript · Prisma 7 · PostgreSQL · JWT auth

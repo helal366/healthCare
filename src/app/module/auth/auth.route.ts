@@ -2,10 +2,12 @@ import { Router } from "express";
 import { Role } from "../../../generated/prisma/enums";
 import { auth } from "../../middleware/checkAuth";
 import { AuthController } from "./auth.controller";
+import { validateZodSchema } from "../../middleware/validateZodSchema";
+import { authRegistrationZodSchema } from "../../zodSchemas/authZodSchema";
 
 const router = Router();
 
-router.post("/register", AuthController.registerPatient);
+router.post("/register",validateZodSchema(authRegistrationZodSchema), AuthController.registerPatient);
 router.post("/login", AuthController.loginUser);
 router.get(
 	"/me",
@@ -14,4 +16,4 @@ router.get(
 );
 router.post("/refresh-token", AuthController.refreshToken);
 router.post("/google", AuthController.googleLogin);
-export const AuthRoutes = router;
+export const AuthRouter = router;
