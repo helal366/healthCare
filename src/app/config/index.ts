@@ -17,7 +17,13 @@ interface EnvVariables {
   GOOGLE_CLIENT_SECRET: string;
   SUPER_ADMIN_NAME: string;
   SUPER_ADMIN_EMAIL: string;
-  SUPER_ADMIN_PASSWORD:string;
+  SUPER_ADMIN_PASSWORD: string;
+  TESTER_ADMIN_NAME: string;
+  TESTER_ADMIN_EMAIL: string;
+  TESTER_ADMIN_PASSWORD: string;
+  TESTER_DOCTOR_NAME: string;
+  TESTER_DOCTOR_EMAIL: string;
+  TESTER_DOCTOR_PASSWORD:string;
 }
 
 const loadEnvVariables = (): EnvVariables => {
@@ -37,6 +43,12 @@ const loadEnvVariables = (): EnvVariables => {
     "SUPER_ADMIN_NAME",
     "SUPER_ADMIN_EMAIL",
     "SUPER_ADMIN_PASSWORD",
+    "TESTER_ADMIN_NAME",
+    "TESTER_ADMIN_EMAIL",
+    "TESTER_ADMIN_PASSWORD",
+    "TESTER_DOCTOR_NAME",
+    "TESTER_DOCTOR_EMAIL",
+    "TESTER_DOCTOR_PASSWORD",
   ];
 	envVars.forEach((element) => {
 		if (!process.env[element]) {
@@ -59,6 +71,12 @@ const loadEnvVariables = (): EnvVariables => {
     SUPER_ADMIN_NAME: process.env.SUPER_ADMIN_NAME as string,
     SUPER_ADMIN_EMAIL: process.env.SUPER_ADMIN_EMAIL as string,
     SUPER_ADMIN_PASSWORD: process.env.SUPER_ADMIN_PASSWORD as string,
+    TESTER_ADMIN_NAME: process.env.TESTER_ADMIN_NAME as string,
+    TESTER_ADMIN_EMAIL: process.env.TESTER_ADMIN_EMAIL as string,
+    TESTER_ADMIN_PASSWORD: process.env.TESTER_ADMIN_PASSWORD as string,
+    TESTER_DOCTOR_NAME: process.env.TESTER_DOCTOR_NAME as string,
+    TESTER_DOCTOR_EMAIL: process.env.TESTER_DOCTOR_EMAIL as string,
+    TESTER_DOCTOR_PASSWORD: process.env.TESTER_DOCTOR_PASSWORD as string,
   };
 };
 
