@@ -25,6 +25,8 @@ export const seedSuperAdmin = async () => {
         email: envVars.SUPER_ADMIN_EMAIL,
         password: hashedPassword,
         role: Role.SUPER_ADMIN,
+        needPasswordChange:false,
+        emailVerified: true
       },
     });
     console.log("Super admin: ", superAdmin);
@@ -62,7 +64,9 @@ export const seedTesterAdmin= async()=>{
             name: envVars.TESTER_ADMIN_NAME,
             email: envVars.TESTER_ADMIN_EMAIL,
             password: hashedPassword,
-            role: Role.ADMIN
+            role: Role.ADMIN,
+            needPasswordChange: false,
+            emailVerified: true,
           },
         });
         console.log("Tester admin: ", testerAdmin)
@@ -85,7 +89,7 @@ export const seedTesterAdmin= async()=>{
 
 export const seedTesterDoctor=async()=>{
     try {
-        const isTesterDoctorExists=await prisma.user.findFirst({
+        const isTesterDoctorExists=await prisma.user.findUnique({
             where:{
                 email: envVars.TESTER_DOCTOR_EMAIL
             }
@@ -101,12 +105,14 @@ export const seedTesterDoctor=async()=>{
             email: envVars.TESTER_DOCTOR_EMAIL,
             password: hashedPassword,
             role: Role.DOCTOR,
+            needPasswordChange: false,
+            emailVerified: true,
           },
         });
         console.log("Tester doctor: ", testerDoctor)
     } catch (error) {
         console.log("Error creating tester doctor. ", {error});
-        const exists = await prisma.user.findFirst({
+        const exists = await prisma.user.findUnique({
           where: {
             email: envVars.TESTER_DOCTOR_EMAIL,
           },
