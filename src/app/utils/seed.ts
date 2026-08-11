@@ -2,6 +2,7 @@ import bcrypt from "bcryptjs";
 import { Role } from "../../generated/prisma/enums";
 import { envVars } from "../config";
 import { prisma } from "../lib/prisma";
+import { email } from "zod";
 
 export const seedSuperAdmin = async () => {
   try {
@@ -28,7 +29,7 @@ export const seedSuperAdmin = async () => {
     });
     console.log("Super admin: ", superAdmin);
   } catch (error) {
-    console.log("Error seeding super admin: ", error);
+    console.log("Error seeding super admin: ", {error});
     const exists = await prisma.user.findFirst({
       where: {
         email: envVars.SUPER_ADMIN_EMAIL,
@@ -66,7 +67,7 @@ export const seedTesterAdmin= async()=>{
         });
         console.log("Tester admin: ", testerAdmin)
     } catch (error) {
-        console.log("Error creating tester admin");
+        console.log("Error creating tester admin. ", {error});
         const exists= await prisma.user.findFirst({
             where:{
                 email: envVars.TESTER_ADMIN_EMAIL
@@ -81,3 +82,41 @@ export const seedTesterAdmin= async()=>{
         }
     }
 };
+
+export const seedTesterDoctor=async()=>{
+    try {
+        const isTesterDoctorExists=await prisma.user.findFirst({
+            where:{
+                email: envVars.TESTER_DOCTOR_EMAIL
+            }
+        });
+        if(isTesterDoctorExists){
+            console.log("Tester doctor exists");
+            return;
+        };
+        const hashedPassword = await bcrypt.hash(envVars.TESTER_DOCTOR_PASSWORD, Number(envVars.BCRYPT_SALT_ROUNDS));
+        const testerDoctor = await prisma.user.create({
+          data: {
+            name: envVars.TESTER_DOCTOR_NAME,
+            email: envVars.TESTER_DOCTOR_EMAIL,
+            password: hashedPassword,
+            role: Role.DOCTOR,
+          },
+        });
+        console.log("Tester doctor: ", testerDoctor)
+    } catch (error) {
+        console.log("Error creating tester doctor. ", {error});
+        const exists = await prisma.user.findFirst({
+          where: {
+            email: envVars.TESTER_DOCTOR_EMAIL,
+          },
+        });
+        if (exists) {
+          await prisma.user.delete({
+            where: {
+              email: envVars.TESTER_DOCTOR_EMAIL,
+            },
+          });
+        }
+    }
+}
