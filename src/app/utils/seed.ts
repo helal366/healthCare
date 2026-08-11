@@ -43,3 +43,41 @@ export const seedSuperAdmin = async () => {
     }
   }
 };
+
+export const seedTesterAdmin= async()=>{
+    try {
+        const isTesterAdmin= await prisma.user.findFirst({
+            where: {
+                email: envVars.TESTER_ADMIN_EMAIL
+            }
+        });
+        if(isTesterAdmin){
+            console.log("Tester admin exists");
+            return;
+        };
+        const hashedPassword = await bcrypt.hash(envVars.TESTER_ADMIN_PASSWORD, Number(envVars.BCRYPT_SALT_ROUNDS))
+        const testerAdmin = await prisma.user.create({
+          data: {
+            name: envVars.TESTER_ADMIN_NAME,
+            email: envVars.TESTER_ADMIN_EMAIL,
+            password: hashedPassword,
+            role: Role.ADMIN
+          },
+        });
+        console.log("Tester admin: ", testerAdmin)
+    } catch (error) {
+        console.log("Error creating tester admin");
+        const exists= await prisma.user.findFirst({
+            where:{
+                email: envVars.TESTER_ADMIN_EMAIL
+            }
+        });
+        if(exists){
+            await prisma.user.delete({
+                where: {
+                    email: envVars.TESTER_ADMIN_EMAIL
+                }
+            })
+        }
+    }
+};
