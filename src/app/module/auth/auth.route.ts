@@ -3,11 +3,15 @@ import { Role } from "../../../generated/prisma/enums";
 import { auth } from "../../middleware/checkAuth";
 import { AuthController } from "./auth.controller";
 import { validateZodSchema } from "../../middleware/validateZodSchema";
-import { authRegistrationZodSchema } from "../../zodSchemas/authZodSchema";
+import { UserValidation } from "../../zodSchemas/authZodSchema";
 
 const router = Router();
 
-router.post("/register",validateZodSchema(authRegistrationZodSchema), AuthController.registerPatient);
+router.post(
+  "/register",
+  validateZodSchema(UserValidation.authRegistrationZodSchema),
+  AuthController.registerPatient,
+);
 router.post("/login", AuthController.loginUser);
 router.get(
 	"/me",
@@ -16,4 +20,6 @@ router.get(
 );
 router.post("/refresh-token", AuthController.refreshToken);
 router.post("/google", AuthController.googleLogin);
+router.post("/forget_password", AuthController.forgetPassword);
+router.post("/reset_password", AuthController.resetPassword);
 export const AuthRouter = router;
