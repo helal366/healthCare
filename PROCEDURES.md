@@ -51,3 +51,72 @@ export const transporter = nodemailer.createTransport({
     }
 })
 ```
+11. at forget_password route service layer, add the following code at bottom:
+```
+ await transporter.sendMail({
+    from: envVars.EMAIL_SENDER,
+    to: isUserExists.email,
+    subject: "Forget Password",
+    html: `<h1>YOUR OTP IS: ${otp}</h1>`,
+  });
+```
+12. at reset_password route service layer, add the following code at bottom:
+```
+await transporter.sendMail({
+    from: envVars.EMAIL_SENDER,
+    to: isUserExists.email,
+    subject: "Password changed",
+    html: `<h1>Your password is changed.</h1>`,
+  });
+```
+13. you can decorate the html as your own.
+
+## EJS for html templetes:
+1. install ejs:
+```
+pnpm add ejs && pnpm add -D @types/ejs
+```
+2. create a folder named as templates under the app folder.
+3. create a file named as forget_password.ejs
+4. into the forget_password.ejs file, type ! and enter. you will get the following code as html file:
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+</html>
+```
+5. change this code with your own email template.
+6. into biome.json, find files and add:
+```
+"includes": [
+		"**",
+		"!src/generated",
+		"!src/app/templates"
+	]
+```
+7. into biome.json, find linter and add the above code.
+8. into forget_password route service layer, at the bottom just before transporter, add :
+```
+const templatePath = path.join(
+    process.cwd(),
+    "src/app/templates/forget_password.ejs",
+  );
+  const html=await ejs.renderFile(templatePath, {OTP:otp})
+  await transporter.sendMail({
+    from: envVars.EMAIL_SENDER,
+    to: isUserExists.email,
+    subject: "Forget Password",
+    html
+  });
+```
+9. check the templatePath carefully and correct if necessary.
+
+## Email verification:
+1. 

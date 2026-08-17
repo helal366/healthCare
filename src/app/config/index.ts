@@ -30,7 +30,8 @@ interface EnvVariables {
   REDIS_PORT: string;
   SMTP_USERNAME: string;
   SMTP_PASSWORD: string;
-  EMAIL_SENDER:string;
+  EMAIL_SENDER: string;
+  EMAIL_SENDER_NAME:string;
 }
 
 const loadEnvVariables = (): EnvVariables => {
@@ -63,6 +64,7 @@ const loadEnvVariables = (): EnvVariables => {
     "SMTP_USERNAME",
     "SMTP_PASSWORD",
     "EMAIL_SENDER",
+    "EMAIL_SENDER_NAME",
   ];
 	envVars.forEach((element) => {
 		if (!process.env[element]) {
@@ -98,6 +100,7 @@ const loadEnvVariables = (): EnvVariables => {
     SMTP_USERNAME: process.env.SMTP_USERNAME as string,
     SMTP_PASSWORD: process.env.SMTP_PASSWORD as string,
     EMAIL_SENDER: process.env.EMAIL_SENDER as string,
+    EMAIL_SENDER_NAME: process.env.EMAIL_SENDER_NAME as string,
   };
 };
 

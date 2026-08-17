@@ -12,12 +12,19 @@ router.post(
   validateZodSchema(UserValidation.authRegistrationZodSchema),
   AuthController.registerPatient,
 );
+
+router.post("/verify_email", 
+  validateZodSchema(UserValidation.verifyEmailZodSchema),
+  AuthController.verifyPatientEmail);
+
 router.post("/login", AuthController.loginUser);
+
 router.get(
 	"/me",
 	auth(Role.ADMIN, Role.DOCTOR, Role.PATIENT, Role.SUPER_ADMIN),
 	AuthController.getMe,
 );
+
 router.post("/refresh-token", AuthController.refreshToken);
 router.post("/google", AuthController.googleLogin);
 router.post("/forget_password", AuthController.forgetPassword);
