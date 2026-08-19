@@ -17,7 +17,7 @@ const bookAppointment = async()=>{
           agreementID: "TokenizedMerchant01L3IKB6H1565072174986", //appointment id
           mode: "0001",
           payerReference: "01723888888", // email or phone number
-          callbackURL: "http://localhost:5000/appointment/book_appointment/payment/callback",
+          callbackURL: envVars.CALL_BACK_URL,
           merchantAssociationInfo: "MI05MID54RF09123456One",
           amount: "12",
           currency: "BDT",

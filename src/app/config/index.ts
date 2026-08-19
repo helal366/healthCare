@@ -39,7 +39,8 @@ interface EnvVariables {
   BKASH_PASSWORD: string;
   BKASH_APP_KEY: string;
   BKASH_APP_SECRET: string;
-  BKASH_BASE_URL:string;
+  BKASH_BASE_URL: string;
+  CALL_BACK_URL:string;
 }
 
 const loadEnvVariables = (): EnvVariables => {
@@ -81,6 +82,7 @@ const loadEnvVariables = (): EnvVariables => {
     "BKASH_APP_KEY",
     "BKASH_APP_SECRET",
     "BKASH_BASE_URL",
+    "CALL_BACK_URL",
   ];
 	envVars.forEach((element) => {
 		if (!process.env[element]) {
@@ -125,6 +127,7 @@ const loadEnvVariables = (): EnvVariables => {
     BKASH_APP_KEY: process.env.BKASH_APP_KEY as string,
     BKASH_APP_SECRET: process.env.BKASH_APP_SECRET as string,
     BKASH_BASE_URL: process.env.BKASH_BASE_URL as string,
+    CALL_BACK_URL: process.env.CALL_BACK_URL as string,
   };
 };
 
