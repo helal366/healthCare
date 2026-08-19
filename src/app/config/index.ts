@@ -40,11 +40,11 @@ interface EnvVariables {
   BKASH_APP_KEY: string;
   BKASH_APP_SECRET: string;
   BKASH_BASE_URL: string;
-  CALL_BACK_URL:string;
+  BKASH_CALLBACK_URL: string;
 }
 
 const loadEnvVariables = (): EnvVariables => {
-	const envVars: string[] = [
+  const envVars: string[] = [
     "NODE_ENV",
     "PORT",
     "DATABASE_URL",
@@ -82,14 +82,14 @@ const loadEnvVariables = (): EnvVariables => {
     "BKASH_APP_KEY",
     "BKASH_APP_SECRET",
     "BKASH_BASE_URL",
-    "CALL_BACK_URL",
+    "BKASH_CALLBACK_URL",
   ];
-	envVars.forEach((element) => {
-		if (!process.env[element]) {
-			throw new Error(`Required environmental variable missing: ${element}`);
-		}
-	});
-	return {
+  envVars.forEach((element) => {
+    if (!process.env[element]) {
+      throw new Error(`Required environmental variable missing: ${element}`);
+    }
+  });
+  return {
     NODE_ENV: process.env.NODE_ENV as INodeEnv,
     PORT: process.env.PORT as string,
     DATABASE_URL: process.env.DATABASE_URL as string,
@@ -127,7 +127,7 @@ const loadEnvVariables = (): EnvVariables => {
     BKASH_APP_KEY: process.env.BKASH_APP_KEY as string,
     BKASH_APP_SECRET: process.env.BKASH_APP_SECRET as string,
     BKASH_BASE_URL: process.env.BKASH_BASE_URL as string,
-    CALL_BACK_URL: process.env.CALL_BACK_URL as string,
+    BKASH_CALLBACK_URL: process.env.BKASH_CALLBACK_URL as string,
   };
 };
 
