@@ -120,3 +120,67 @@ const templatePath = path.join(
 
 ## Email verification:
 1. 
+
+
+
+## stripe webhooks: 
+* last url part: test/workbench/webhook
+
+## stripe listener:
+1. Download the Stripe CLI and log in with your Stripe account
+  $stripe login
+2. Forward events to your destination
+  $ stripe listen --forward-to localhost:4242/webhook
+3. Trigger events with the CLI
+  $stripe trigger payment_intent.succeeded
+
+## bKash payment:
+* search in google with the text: "bkash sendbox credentials". find **bKash Sandbox Credentials for Payment Gateway Testing** and enter into it. you will find the following values:
+* Table format:
+| **Key** | **Value** |
+|----------|-----------|
+| **BKASH_USERNAME** | `sandboxTokenizedUser02` |
+| **BKASH_PASSWORD** | `sandboxTokenizedUser02@12345` |
+| **BKASH_APP_KEY** | `4f6o0cjiki2rfm34kfdadl1eqq` |
+| **BKASH_APP_SECRET** | `2is7hdktrekvrbljjh44ll3d9l1dtjo4pasmjvs5vl5qr3fug4b` |
+
+* Code format:
+```
+BKASH_USERNAME=sandboxTokenizedUser02
+BKASH_PASSWORD=sandboxTokenizedUser02@12345
+BKASH_APP_KEY=4f6o0cjiki2rfm34kfdadl1eqq
+BKASH_APP_SECRET=2is7hdktrekvrbljjh44ll3d9l1dtjo4pasmjvs5vl5qr3fug4b
+```
+
+* Active Customer Wallets (Successful Transactions):
+Key	Wallet Number
+01770618575
+01929918378
+01770618576
+01877722345
+01619777282
+01619777283
+
+* PIN and OTP
+PIN:	12121
+OTP:	123456
+
+* Wallets for Failed Transaction:
+* Table format:
+| **SL** | **Wallet Number** | **Failure Reason** |
+|:------:|-------------------|--------------------|
+| 1 | `01823074817` | Insufficient Balance |
+| 2 | `01823074818` | Debit Block |
+
+* Normal format:
+Wallet Number: 01823074817; 
+Failure Reason: Insufficient Balance;
+
+Wallet Number: 01823074818; 
+Failure Reason: Debit Block;
+
+* Base URLs:
+- Sandbox URL: https://tokenized.sandbox.bka.sh/v1.2.0-beta;
+- Live URL: https://tokenized.pay.bka.sh/v1.2.0-beta;
+
+* **Now create a bkash.ts file into lib folder** and then config the file.

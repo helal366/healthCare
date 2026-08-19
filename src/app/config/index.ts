@@ -34,7 +34,12 @@ interface EnvVariables {
   EMAIL_SENDER_NAME: string;
   CLOUDINARY_CLOUD_NAME: string;
   CLOUDINARY_API_KEY: string;
-  CLOUDINARY_API_SECRET:string;
+  CLOUDINARY_API_SECRET: string;
+  BKASH_USERNAME: string;
+  BKASH_PASSWORD: string;
+  BKASH_APP_KEY: string;
+  BKASH_APP_SECRET: string;
+  BKASH_BASE_URL:string;
 }
 
 const loadEnvVariables = (): EnvVariables => {
@@ -71,6 +76,11 @@ const loadEnvVariables = (): EnvVariables => {
     "CLOUDINARY_CLOUD_NAME",
     "CLOUDINARY_API_KEY",
     "CLOUDINARY_API_SECRET",
+    "BKASH_USERNAME",
+    "BKASH_PASSWORD",
+    "BKASH_APP_KEY",
+    "BKASH_APP_SECRET",
+    "BKASH_BASE_URL",
   ];
 	envVars.forEach((element) => {
 		if (!process.env[element]) {
@@ -110,6 +120,11 @@ const loadEnvVariables = (): EnvVariables => {
     CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME as string,
     CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY as string,
     CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET as string,
+    BKASH_USERNAME: process.env.BKASH_USERNAME as string,
+    BKASH_PASSWORD: process.env.BKASH_PASSWORD as string,
+    BKASH_APP_KEY: process.env.BKASH_APP_KEY as string,
+    BKASH_APP_SECRET: process.env.BKASH_APP_SECRET as string,
+    BKASH_BASE_URL: process.env.BKASH_BASE_URL as string,
   };
 };
 
