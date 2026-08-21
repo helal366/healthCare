@@ -5,16 +5,12 @@ import { prisma } from "../lib/prisma";
 import { catchAsync } from "../utils/catchAsync";
 import { jwtUtils } from "../utils/jwt";
 import { envVars } from "../config";
+import { ICheckAuthPatient } from "../module/appointment/appointment.interface";
 
 declare global {
 	namespace Express {
 		interface Request {
-			user?: {
-				email: string;
-				name: string;
-				userId: string;
-				role: Role;
-			};
+			user?: ICheckAuthPatient;
 		}
 	}
 }

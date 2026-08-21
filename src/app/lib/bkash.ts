@@ -13,15 +13,14 @@ interface BkashTokenResponse {
   statusMessage: string;
   expires_in: number;
 }
-
+const bkashIdTokenKey = "bkash:idToken";
+const bkashRefreshToken = "bkash:refreshToken";
 
 const storeIdTokenRefreshTokenInRedis = async ({
   id_token,
   refresh_token,
 }: RedisSetPayload) => {
-  const bkashIdTokenKey = "bkash:idToken";
-  const bkashRefreshToken = "bkash:refreshToken";
-
+  
   await redisClient.set(bkashIdTokenKey, id_token, {
     expiration: {
       type: "EX",
@@ -40,9 +39,6 @@ const storeIdTokenRefreshTokenInRedis = async ({
 
 export const getBkashIdToken = async (): Promise<RedisSetPayload> => {
   try {
-    const bkashIdTokenKey = "bksah:idToken";
-    const bkashRefreshToken = "bkash:refreshToken";
-
     const bkashIdTokenFromRedis = await redisClient.get(bkashIdTokenKey);
     const bkashRefreshTokenFromRedis = await redisClient.get(bkashRefreshToken);
 
@@ -57,7 +53,7 @@ export const getBkashIdToken = async (): Promise<RedisSetPayload> => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Accept: "application / json",
+            Accept: "application/json",
             username: envVars.BKASH_USERNAME,
             password: envVars.BKASH_PASSWORD,
           },
@@ -71,6 +67,12 @@ export const getBkashIdToken = async (): Promise<RedisSetPayload> => {
       if (!response.ok) {
         throw new Error("bKash ID token grant failed.");
       }
+      console.log("=== BKASH TOKEN GRANT ===");
+      console.log(
+        "URL:",
+        `${envVars.BKASH_BASE_URL}/tokenized/checkout/token/grant`,
+      );
+      
       const result: BkashTokenResponse = await response.json();
 
 
@@ -100,7 +102,7 @@ export const getBkashIdToken = async (): Promise<RedisSetPayload> => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Accept: "application / json",
+          Accept: "application/json",
           username: envVars.BKASH_USERNAME,
           password: envVars.BKASH_PASSWORD,
         },
@@ -118,6 +120,7 @@ export const getBkashIdToken = async (): Promise<RedisSetPayload> => {
       id_token: result.id_token,
       refresh_token: result.refresh_token,
     });
+ 
 
     return {
       id_token: result.id_token,
@@ -129,20 +132,3 @@ export const getBkashIdToken = async (): Promise<RedisSetPayload> => {
     throw new Error(message);
   }
 };
-
-
-
-/**
- * Sample Request
- * POST /tokenized/checkout/token/grant HTTP/1.1
-Host: {base_URL}
-Content-Type: application/json
-Accept: application/json
-username: username
-password: password
-
-{  
-   "app_key": "test_app_key",
-   "app_secret": "test_app_secret"
-}
- */

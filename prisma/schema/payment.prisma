@@ -1,0 +1,26 @@
+model Payment {
+  id       String        @id @default(uuid())
+  status   PaymentStatus @default(UNPAID)
+  amount   Decimal       @db.Decimal(10, 2)
+  currency String        @default("BDT")
+  paymentGateway String @default("BKASH")
+  merchantInvoiceNumber String @unique //appointment id
+  bkashPaymentId String? @unique
+  bkashTrxId String?
+  payerReference String? //user email or phone number
+  paidAt String? //paymentExecuteTime : Format is - "yyyy-MM-dd'T'HH:mm:ss 'GMT'Z".
+
+  gatewayResponse Json?
+
+  refundTrxId String?
+  refundAmount Decimal? @db.Decimal(10,2)
+  refundReason String?
+  refundedAt String?   // "completedTime": "2024-06-13T16:27:25:422 GMT+0600",
+  appointmentId String      @unique
+  appointment   Appointment @relation(fields: [appointmentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("payments")
+}

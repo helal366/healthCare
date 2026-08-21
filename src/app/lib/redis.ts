@@ -9,11 +9,3 @@ export const redisClient = createClient({
     port: Number(envVars.REDIS_PORT),
   },
 });
-
-// redisClient.on("error", (err) => console.log("Redis Client Error", err));
-
-// await redisClient.connect();
-
-// await redisClient.set("foo", "bar");
-// const result = await redisClient.get("foo");
-// console.log(result); // >>> bar
