@@ -6,6 +6,7 @@ import { Role } from "../../../generated/prisma/enums";
 const router = Router();
 
 router.post("/book_appointment", auth(Role.PATIENT, Role.ADMIN), appointmentController.bookAppointment);
+router.post("/pay_appointment", auth(Role.PATIENT, Role.ADMIN), appointmentController.payAppointment);
 router.get("/book_appointment/payment/callback", appointmentController.bookAppointmentCallback);
 
 export const AppointmentRouter = router;
