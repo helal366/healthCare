@@ -29,7 +29,7 @@ export const seedSuperAdmin = async () => {
         emailVerified: true
       },
     });
-    console.log("Super admin: ", superAdmin);
+    // console.log("Super admin: ", superAdmin);
   } catch (error) {
     console.log("Error seeding super admin: ", {error});
     const exists = await prisma.user.findFirst({
@@ -111,8 +111,8 @@ export const seedTesterDoctor=async()=>{
               create:{
                 name: "TesterDoctor",
                 email: "tester_doctor@gmail.com",
-                specilization: "NEUROLOGY",
-                licenceNumber: "BMD2541",
+                specialization: "NEUROLOGY",
+                licenseNumber: "BMD2541",
                 qualifications: "FCPS_PART1",
                 experienceYears: 2,
                 contactNo: "01711999000"
@@ -120,7 +120,7 @@ export const seedTesterDoctor=async()=>{
             }
           },
         });
-        console.log("Tester doctor: ", testerDoctor)
+        // console.log("Tester doctor: ", testerDoctor)
     } catch (error) {
         console.log("Error creating tester doctor. ", {error});
         const exists = await prisma.user.findUnique({

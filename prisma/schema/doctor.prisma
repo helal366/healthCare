@@ -4,8 +4,8 @@ model Doctor{
     email String? @unique
     address String?
 
-    specilization String
-    licenceNumber String @unique
+    specialization String
+    licenseNumber String @unique
     qualifications String
     experienceYears Int
     bio String?
@@ -18,7 +18,8 @@ model Doctor{
     reviewedAt DateTime?
 
     resume String?
-    additionalFiles String[]
+    resumePublicId String?
+    additionalFiles Json?  //Stores additional files as an array of objects [{fileName: string, fileUrl: string, filePublicId: string}] 
 
     isDeleted     Boolean   @default(false)
     deletedAt     DateTime?
