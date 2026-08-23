@@ -35,6 +35,20 @@ const payAppointment = catchAsync(async(req:Request, res:Response, next:NextFunc
     data: result,
   });
 });
+const cancelAppointment = catchAsync(async(req:Request, res:Response, next:NextFunction)=>{
+  const payload = req.body;
+  const user: ICheckAuthPatient | undefined = req.user;
+  if (!user) {
+    throw new AppError("Please Login...", StatusCodes.UNAUTHORIZED);
+  }
+  const result = await appointmentService.cancelAppointment(payload);
+  sendResponse(res, {
+    success: true,
+    statusCode: StatusCodes.CREATED,
+    message: "Appointment cancelled and refunded successfully.",
+    data: result,
+  });
+});
 
 const bookAppointmentCallback = catchAsync(async(req:Request, res:Response, next:NextFunction)=>{
     const payload= req.query
@@ -47,4 +61,5 @@ export const appointmentController = {
   bookAppointment,
   bookAppointmentCallback,
   payAppointment,
+  cancelAppointment,
 };

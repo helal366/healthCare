@@ -107,6 +107,17 @@ export const seedTesterDoctor=async()=>{
             role: Role.DOCTOR,
             needPasswordChange: false,
             emailVerified: true,
+            doctor:{
+              create:{
+                name: "TesterDoctor",
+                email: "tester_doctor@gmail.com",
+                specilization: "NEUROLOGY",
+                licenceNumber: "BMD2541",
+                qualifications: "FCPS_PART1",
+                experienceYears: 2,
+                contactNo: "01711999000"
+              }
+            }
           },
         });
         console.log("Tester doctor: ", testerDoctor)
