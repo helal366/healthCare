@@ -4,7 +4,6 @@ import { sendResponse } from "../../utils/sendResponse";
 import { StatusCodes } from "http-status-codes";
 import { AppError } from "../../helperFunctions/globalErrorHelper";
 import { userServices } from "./user.service";
-import { envVars } from "../../config";
 
 const uploadProfileImage=catchAsync(async(req:Request, res:Response, next:NextFunction)=>{
     if(!req.file || !req.user){

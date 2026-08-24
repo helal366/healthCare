@@ -46,7 +46,6 @@ const uploadProfileImage = async (buffer: Buffer, userId:string) => {
        await cloudinary.uploader.destroy(user.profilePhotoPublicId)
     }
     return updatedUser;
-
 };
 
 export const userServices = {
