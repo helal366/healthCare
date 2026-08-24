@@ -7,9 +7,10 @@ const applyDoctorZodSchema = z.object({
       .trim()
       .min(2, "Must be atleast 2 character."),
     email: z.email("Invalid email format!!!"),
-    password: z.string().min(6, "Minimum 6 characters required!!!"),
-    role: z.enum(["PATIENT", "DOCTOR", "ADMIN"]).optional(),
-    status: z.enum(["ACTIVE", "INACTIVE"]).optional(),
+    // emailVerified: z.boolean().optional(),
+    password: z.string().min(6, "Minimum 6 characters required!!!").optional(),
+    role: z.enum(["PATIENT", "DOCTOR", "ADMIN", "SUPER_ADMIN"]).optional(),
+    status: z.enum(["ACTIVE", "BLOCKED", "DELETED"]).optional(),
     needPasswordChange: z.boolean().optional(),
   }),
   doctor: z.object({
@@ -36,7 +37,7 @@ const applyDoctorZodSchema = z.object({
     reviewedAt: z.string().optional(),
   }),
 });
-
+export type ApplyDoctorPayload = z.infer<typeof applyDoctorZodSchema>;
 export const DoctorValidation = {
   applyDoctorZodSchema,
 };

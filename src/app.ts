@@ -11,8 +11,6 @@ import { notFound } from "./app/middleware/notFound";
 import { AuthRouter } from "./app/module/auth/auth.route";
 import { envVars } from "./app/config";
 import { StatusCodes } from "http-status-codes";
-import { redisClient } from "./app/lib/redis";
-import crypto from "crypto";
 import { UserRouter } from "./app/module/user/user.route";
 import { getBkashIdToken } from "./app/lib/bkash";
 import { AppointmentRouter } from "./app/module/appointment/appointment.route";

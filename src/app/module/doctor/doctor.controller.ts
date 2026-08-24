@@ -5,6 +5,7 @@ import { sendResponse } from "../../utils/sendResponse";
 import { StatusCodes } from "http-status-codes";
 import { DoctorValidation } from "../../zodSchemas/applyDoctorZodSchema";
 import { AppError } from "../../helperFunctions/globalErrorHelper";
+import { IApproveDoctorPayload } from "./doctor.interface";
 
 const applyAsDoctor= catchAsync(async(req:Request, res:Response, next:NextFunction)=>{
     const files = req.files as {[field:string]:Express.Multer.File[]};
@@ -39,6 +40,28 @@ const applyAsDoctor= catchAsync(async(req:Request, res:Response, next:NextFuncti
     });
 });
 
+const verifyDoctorEmail = catchAsync(async(req:Request, res:Response, next: NextFunction)=>{
+  const payload = req.body;
+  const result = await doctorServices.verifyDoctorEmail(payload);
+  sendResponse(res, {
+    success: true,
+    statusCode: StatusCodes.OK,
+    message: "Doctor email verified successfully.",
+    data: result,
+  });
+});
+
+const approveDoctor = catchAsync(async(req:Request, res:Response, next:NextFunction)=>{
+  const payload: IApproveDoctorPayload = req.body;
+  sendResponse(res,{
+    success: true,
+    statusCode: StatusCodes.OK,
+    message: "",
+    data: null
+  })
+});
 export const doctorController = {
   applyAsDoctor,
+  verifyDoctorEmail,
+  approveDoctor,
 };
