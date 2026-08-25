@@ -188,17 +188,23 @@ const approveDoctor = async (payload: IApproveDoctorPayload, reviewer:IRequestUs
     include: {user:true}
   });
   if(!existingDoctor){
-    throw new AppError("Doctor not found.", StatusCodes.OK)
+    throw new AppError("Doctor not found.", StatusCodes.NOT_FOUND)
   };
   if(existingDoctor.isDeleted){
-    throw new AppError("Doctor is deleted.", StatusCodes.OK)
+    throw new AppError("Doctor is deleted.", StatusCodes.NOT_FOUND)
   };
   if(!existingDoctor.user.emailVerified){
     throw new AppError("Doctor has not verified his/her email yet.", StatusCodes.BAD_REQUEST)
   };
 
-  if(existingDoctor.verificationStatus === DoctorVerificationStatus.REJECTED && !rejectionReason){
-    throw new AppError("Rejection reason is required for application rejection", StatusCodes.BAD_REQUEST);
+  if (
+    verificationStatus === DoctorVerificationStatus.REJECTED &&
+    !rejectionReason
+  ) {
+    throw new AppError(
+      "Rejection reason is required for application rejection",
+      StatusCodes.BAD_REQUEST,
+    );
   }
   if(existingDoctor.verificationStatus !== DoctorVerificationStatus.PENDING){
     throw new AppError("Doctor application has already been reviewed.", StatusCodes.BAD_REQUEST)
@@ -207,11 +213,52 @@ const approveDoctor = async (payload: IApproveDoctorPayload, reviewer:IRequestUs
     where: { id: doctorId },
     data: {
       verificationStatus,
-      rejectionReason: rejectionReason ?? null,
+      rejectionReason:
+        verificationStatus === DoctorVerificationStatus.REJECTED
+          ? rejectionReason
+          : null,
       reviewedBy: reviewer.userId,
       reviewedAt: new Date(),
     },
   });
+
+  const isApproved =
+    updatedDoctor.verificationStatus === DoctorVerificationStatus.APPROVED;
+  const templateName = isApproved
+    ? "approve_doctor.ejs"
+    : "rejected_doctor.ejs";
+  const templatePath = path.join(
+    process.cwd(),
+    `src/app/templates/${templateName}`,
+  );
+  const templateData = {
+    name: updatedDoctor.name,
+    rejectionReason: rejectionReason ?? "",
+    year: new Date().getFullYear(),
+  };
+
+  try {
+    const html =await ejs.renderFile(templatePath, templateData);
+     const subject = isApproved
+       ? "Credentials Verified – Welcome to the HealthCare Provider Network!"
+       : "Update Regarding Your HealthCare Application";
+    await transporter.sendMail({
+      from: `"${envVars.EMAIL_SENDER_NAME}" <${envVars.EMAIL_SENDER}>`,
+      to: existingDoctor.user.email,
+      subject,
+      html,
+    });
+  } catch (error) {
+     console.error(
+       `[Mailer Error] Verification notice failed for doctor ${doctorId}:`,
+       error,
+     );
+    const message =
+      error instanceof Error
+        ? error.message
+        : "Failed to send notification email";
+    throw new AppError(message, StatusCodes.INTERNAL_SERVER_ERROR)
+  }
 };
 export const doctorServices = {
   applyAsDoctor,
