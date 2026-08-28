@@ -15,6 +15,7 @@ import { UserRouter } from "./app/module/user/user.route";
 import { getBkashIdToken } from "./app/lib/bkash";
 import { AppointmentRouter } from "./app/module/appointment/appointment.route";
 import { DoctorRouter } from "./app/module/doctor/doctor.route";
+import { ScheduleRouter } from "./app/module/schedule/schedule.route";
 
 const app: Application = express();
 
@@ -36,6 +37,7 @@ app.use("/api/v1/auth", AuthRouter);
 app.use("/api/v1/user", UserRouter);
 app.use("/api/v1/appointment", AppointmentRouter);
 app.use("/api/v1/doctor", DoctorRouter);
+app.use("/api/v1/schedule", ScheduleRouter);
 
 app.get(
   "/redis/test",

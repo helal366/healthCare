@@ -53,6 +53,11 @@ const verifyDoctorEmail = catchAsync(async(req:Request, res:Response, next: Next
 
 const approveDoctor = catchAsync(async(req:Request, res:Response, next:NextFunction)=>{
   const payload: IApproveDoctorPayload = req.body;
+  const reviewer = req.user;
+  if(!reviewer){
+    throw new AppError("Please login.", StatusCodes.UNAUTHORIZED)
+  }
+  const result = await doctorServices.approveDoctor(payload, reviewer);
   sendResponse(res,{
     success: true,
     statusCode: StatusCodes.OK,
@@ -60,8 +65,21 @@ const approveDoctor = catchAsync(async(req:Request, res:Response, next:NextFunct
     data: null
   })
 });
+
+const getAllDoctors = catchAsync(async(req:Request, res:Response, next:NextFunction)=>{
+  const {data, meta} =await doctorServices.getAllDoctors(req.query);
+  sendResponse(res, {
+    success: true,
+    statusCode: StatusCodes.OK,
+    message: "Doctors data retrieved successfully.",
+    data: data,
+    meta: meta
+  })
+});
+
 export const doctorController = {
   applyAsDoctor,
   verifyDoctorEmail,
   approveDoctor,
+  getAllDoctors,
 };

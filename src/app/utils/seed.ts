@@ -2,7 +2,6 @@ import bcrypt from "bcryptjs";
 import { Role } from "../../generated/prisma/enums";
 import { envVars } from "../config";
 import { prisma } from "../lib/prisma";
-import { email } from "zod";
 
 export const seedSuperAdmin = async () => {
   try {

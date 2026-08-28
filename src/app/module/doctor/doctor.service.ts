@@ -14,6 +14,8 @@ import { transporter } from "../../lib/nodemailer";
 import { ApplyDoctorPayload } from "../../zodSchemas/applyDoctorZodSchema";
 import { IApproveDoctorPayload, IVerifyDoctorEmailPayload } from "./doctor.interface";
 import { IRequestUser } from "../auth/auth.interface";
+import { DoctorWhereInput } from "../../../generated/prisma/models";
+import { IQuery } from "../../interface";
 
 const applyAsDoctor = async (
   payload: ApplyDoctorPayload,
@@ -260,8 +262,88 @@ const approveDoctor = async (payload: IApproveDoctorPayload, reviewer:IRequestUs
     throw new AppError(message, StatusCodes.INTERNAL_SERVER_ERROR)
   }
 };
+
+const getAllDoctors = async(query:IQuery)=>{
+  const limit = query.limit ? Number(query.limit) : 10;
+  const page = query.page ? Number(query.page) : 1;
+  const skip = (page-1)*limit;
+  const sortBy = query.sortBy ?? "createdAt";
+  const sortOrder = query.sortOrder ?? "desc";
+
+  const andConditions:DoctorWhereInput[]=[];
+  // searching
+  if(query.searchTerm){
+    andConditions.push({
+      OR: [
+        { name: { contains: query.searchTerm, mode: "insensitive" } },
+        { email: { contains: query.searchTerm, mode: "insensitive" } },
+        { specialization: { contains: query.searchTerm, mode: "insensitive" } },
+        { licenseNumber: { contains: query.searchTerm, mode: "insensitive"}},
+      ],
+    });
+  };
+
+  // filtering
+  if(query.specialization){
+    andConditions.push({
+      specialization: {equals:query.specialization, mode: "insensitive"}
+    })
+  };
+  if(query.email){
+    andConditions.push({
+      email: {contains:query.email, mode: "insensitive"}
+    })
+  };
+  if (query.licenseNumber) {
+    andConditions.push({
+      licenseNumber: { equals: query.licenseNumber, mode: "insensitive" },
+    });
+  };
+  if (query.verificationStatus) {
+    andConditions.push({
+      verificationStatus: query.verificationStatus as DoctorVerificationStatus,
+    });
+  };
+  if(query.isDeleted){
+    andConditions.push({isDeleted: query.isDeleted === true ? true : false})
+  };
+
+  const allDoctors = await prisma.doctor.findMany({
+    where: {
+      AND: andConditions
+    },
+    take: limit,
+    skip: skip,
+    orderBy: {
+      [sortBy]: sortOrder
+    },
+    include: {
+      user:{
+        omit:{
+          password: true
+        }
+      }
+    }
+  });
+  const totalDoctorCount = await prisma.doctor.count({
+    where:{
+      AND:andConditions
+    }
+  });
+
+  return {
+    data: allDoctors,
+    meta: {
+      page: page,
+      limit: limit,
+      total: totalDoctorCount,
+      totalPages: Math.ceil(totalDoctorCount/limit)
+    }
+  }
+}
 export const doctorServices = {
   applyAsDoctor,
   verifyDoctorEmail,
   approveDoctor,
+  getAllDoctors,
 };
