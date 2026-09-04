@@ -37,11 +37,11 @@ const payAppointment = catchAsync(async(req:Request, res:Response, next:NextFunc
 });
 const cancelAppointment = catchAsync(async(req:Request, res:Response, next:NextFunction)=>{
   const payload = req.body;
-  const user: ICheckAuthPatient | undefined = req.user;
+  const user = req.user;
   if (!user) {
     throw new AppError("Please Login...", StatusCodes.UNAUTHORIZED);
   }
-  const result = await appointmentService.cancelAppointment(payload);
+  const result = await appointmentService.cancelAppointment(payload, user);
   sendResponse(res, {
     success: true,
     statusCode: StatusCodes.CREATED,
@@ -57,9 +57,30 @@ const bookAppointmentCallback = catchAsync(async(req:Request, res:Response, next
     console.log({executedPayment})
     res.redirect(redirectUrl);
 });
+
+const updateAppointmentStatus = catchAsync(
+	async (req: Request, res: Response) => {
+		const appointmentId = req.params.appointmentId as string;
+		const payload = req.body;
+		const user = req.user!;
+
+		const result = await appointmentService.updatedAppointmentStatus(
+			appointmentId,
+			payload,
+			user,
+		);
+		sendResponse(res, {
+			statusCode: StatusCodes.OK,
+			success: true,
+			message: "Appointment Status Updated Successfully",
+			data: result,
+		});
+	},
+);
 export const appointmentController = {
   bookAppointment,
   bookAppointmentCallback,
   payAppointment,
   cancelAppointment,
+  updateAppointmentStatus
 };

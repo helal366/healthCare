@@ -5,11 +5,13 @@ import { getBkashIdToken } from "../../lib/bkash";
 import { IBkashCreatePaymentResponse } from "./appointment.interface";
 interface IBkashCreatePaymentProps {
   appointmentId:string;
-  userEmail:string
+  userEmail:string,
+  amount:string;
 }
 export const bkashCreatePayment = async ({
   appointmentId,
   userEmail,
+  amount
 }: IBkashCreatePaymentProps) => {
   const bkashIdToken = await getBkashIdToken();
   const bkashCreatePaymentResponse = await fetch(
@@ -26,7 +28,7 @@ export const bkashCreatePayment = async ({
         mode: "0011",
         payerReference: userEmail, // email or phone number
         callbackURL: `${envVars.BKASH_CALLBACK_URL}/appointment/book_appointment/payment/callback`,
-        amount: "100",
+        amount,
         currency: "BDT",
         intent: "sale",
         merchantInvoiceNumber: appointmentId, //appointment id and it is unique

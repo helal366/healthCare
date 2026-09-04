@@ -31,3 +31,17 @@ export interface IBkashCreatePaymentResponse extends Prisma.JsonObject{
   statusCode: string;
   statusMessage: string;
 }
+
+export interface IBookAppointmentPayload{
+  scheduleId:string
+}
+
+export interface IPayAppointmentPayload{
+  appointmentId: string
+}
+
+export type ICancelAppointmentPayload = IPayAppointmentPayload;
+
+export interface IUpdateAppointmentPayload{
+  status : "ONGOING" | "COMPLETED"
+}
