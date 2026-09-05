@@ -530,7 +530,7 @@ const cancelAppointment = async (
         );
       }
       // update payment
-      const updatedPayment = await tx.payment.update({
+      await tx.payment.update({
         where: {
           appointmentId,
         },
