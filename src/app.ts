@@ -16,6 +16,7 @@ import { getBkashIdToken } from "./app/lib/bkash";
 import { AppointmentRouter } from "./app/module/appointment/appointment.route";
 import { DoctorRouter } from "./app/module/doctor/doctor.route";
 import { ScheduleRouter } from "./app/module/schedule/schedule.route";
+import { PaymentRouter } from "./app/module/payment/payment.route";
 
 const app: Application = express();
 
@@ -38,6 +39,7 @@ app.use("/api/v1/user", UserRouter);
 app.use("/api/v1/appointment", AppointmentRouter);
 app.use("/api/v1/doctor", DoctorRouter);
 app.use("/api/v1/schedule", ScheduleRouter);
+app.use("/api/v1/payment", PaymentRouter);
 
 app.get(
   "/redis/test",
