@@ -77,9 +77,79 @@ const getAllDoctors = catchAsync(async(req:Request, res:Response, next:NextFunct
   })
 });
 
+const updateDoctorProfile = catchAsync(
+	async (req: Request, res: Response) => {
+		const payload = req.body;
+		const user = req.user!;
+
+		const result = await doctorServices.updateDoctorProfile(payload, user);
+		sendResponse(res, {
+			statusCode: StatusCodes.OK,
+			success: true,
+			message: "Doctor Profile Updated Successfully",
+			data: result,
+		});
+	},
+);
+
+
+
+const getAvailableDoctorByTodaysSchedule = catchAsync(
+	async (req: Request, res: Response) => {
+	
+
+		const { data, meta } = await doctorServices.getAvailableDoctorByTodaysSchedule(
+			req.query
+		);
+		sendResponse(res, {
+			statusCode: StatusCodes.OK,
+			success: true,
+			message: "Today's Available Doctors Retrieved Successfully",
+			data,
+			meta,
+		});
+	},
+);
+
+const getAllDoctorsListPublic = catchAsync(async (req: Request, res: Response) => {
+
+
+	const { data, meta } = await doctorServices.getAllDoctorsListPublic(
+		req.query
+	);
+	sendResponse(res, {
+		statusCode: StatusCodes.OK,
+		success: true,
+		message: "Doctors Retrieved Successfully",
+		data,
+		meta,
+	});
+});
+
+const getSingleDoctorPublicProfile = catchAsync(
+	async (req: Request, res: Response) => {
+
+		const doctorId = req.params.doctorId as string
+		
+		const result = await doctorServices.getSingleDoctorPublicProfile(
+			doctorId
+		);
+		sendResponse(res, {
+			statusCode: StatusCodes.OK,
+			success: true,
+			message: "Doctor Profile Retrieved Successfully",
+			data: result,
+		});
+	},
+);
+
 export const doctorController = {
   applyAsDoctor,
   verifyDoctorEmail,
   approveDoctor,
   getAllDoctors,
+  updateDoctorProfile,
+  getAvailableDoctorByTodaysSchedule,
+  getAllDoctorsListPublic,
+  getSingleDoctorPublicProfile
 };

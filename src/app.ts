@@ -18,6 +18,7 @@ import { DoctorRouter } from "./app/module/doctor/doctor.route";
 import { ScheduleRouter } from "./app/module/schedule/schedule.route";
 import { PaymentRouter } from "./app/module/payment/payment.route";
 import { PrescriptionRouter } from './app/module/prescription/prescription.route';
+import { AnalyticsRouter } from "./app/module/analytics/analytics.route";
 
 const app: Application = express();
 
@@ -42,6 +43,7 @@ app.use("/api/v1/doctor", DoctorRouter);
 app.use("/api/v1/schedule", ScheduleRouter);
 app.use("/api/v1/payment", PaymentRouter);
 app.use("/api/v1/prescription", PrescriptionRouter);
+app.use("/api/v1/analytics", AnalyticsRouter);
 
 app.get(
   "/redis/test",
