@@ -238,7 +238,7 @@ const getDoctorAnalytics = async (user : IRequestUser) => {
 
 }
 
-export const AnalyticsServices = {
+export const analyticsServices = {
     getAdminAnalytics,
     getPatientAnalytics,
     getDoctorAnalytics
