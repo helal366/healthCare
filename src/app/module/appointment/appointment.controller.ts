@@ -64,7 +64,7 @@ const updateAppointmentStatus = catchAsync(
 		const payload = req.body;
 		const user = req.user!;
 
-		const result = await appointmentService.updatedAppointmentStatus(
+		const result = await appointmentService.updateAppointmentStatus(
 			appointmentId,
 			payload,
 			user,
